@@ -1,29 +1,42 @@
 import Fornecedor from "../models/Fornecedor.js";
 
-const findByNomeFornecedorRepository = (nome) =>
-  Fornecedor.findOne({ nome: nome });
+function findByNomeFornecedorRepository(nome) {
+  const fornecedor = Fornecedor.findOne({ nome: nome });
+  return fornecedor;
+}
 
-const findFornecedorById = (id) => Fornecedor.findById(id);
+function findFornecedorById(id) {
+  const fornecedor = Fornecedor.findById(id);
+  return fornecedor;
+}
 
-const createFornecedorRepository = ({ nome }) => Fornecedor.create({ nome });
+function createFornecedorRepository({ nome }) {
+  const fornecedor = Fornecedor.create({ nome });
+  return fornecedor;
+}
 
-const findAllFornecedoresRepository = () => Fornecedor.find();
+function findAllFornecedoresRepository() {
+  const fornecedores = Fornecedor.find();
+  return fornecedores;
+}
 
-const addProduto = (idFornecedor, idProduto) =>
-  Fornecedor.findByIdAndUpdate(
+function addProduto(idFornecedor, idProduto) {
+  const fornecedor = Fornecedor.findByIdAndUpdate(
     { _id: idFornecedor },
     { $push: { produtos: idProduto } }
   );
+  return fornecedor;
+}
 
-const excludeProduto = (idFornecedor, idProduto) => {
+function excludeProduto(idFornecedor, idProduto) {
   return Fornecedor.findByIdAndUpdate(
     { _id: idFornecedor },
     { $pull: { produtos: idProduto } },
     { new: true }
   );
-};
+}
 
-const updateFornecedorRepository = async (id, nome) => {
+async function updateFornecedorRepository(id, nome) {
   try {
     const updatedFornecedor = await Fornecedor.findByIdAndUpdate(
       { _id: id },
@@ -35,10 +48,22 @@ const updateFornecedorRepository = async (id, nome) => {
   } catch (e) {
     throw new Error("Erro ao atualizar " + e.message);
   }
-};
+}
 
-const getProdutosByFornecedorRepository = (id) =>
-  Fornecedor.findById(id).populate("produtos");
+function getProdutosByFornecedorRepository(id) {
+  const fornecedor = Fornecedor.findById(id).populate("produtos");
+  return fornecedor;
+}
+
+function findFornecedorByNameRepository(nome) {
+  return Fornecedor.find({
+    nome: { $regex: `${nome || ""}`, $options: "i" },
+  }).sort({ _id: -1 });
+}
+
+function deleteFornecedorRepository(id) {
+  return Fornecedor.findByIdAndDelete(id);
+}
 
 export default {
   createFornecedorRepository,
@@ -49,4 +74,6 @@ export default {
   updateFornecedorRepository,
   addProduto,
   excludeProduto,
+  findFornecedorByNameRepository,
+  deleteFornecedorRepository,
 };

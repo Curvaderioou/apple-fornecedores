@@ -55,10 +55,34 @@ async function getProdutosByFornecedorController(req, res) {
   }
 }
 
+async function findFornecedorByNameController(req, res) {
+  const nome = req.params.nome;
+  try {
+    const fornecedores = await fornecedorService.findFornecedorByNameService(
+      nome
+    );
+    return res.send(fornecedores);
+  } catch (e) {
+    return res.status(400).send(e.message);
+  }
+}
+
+async function deleteFornecedorController(req, res) {
+  const id = req.params.id;
+  try {
+    await fornecedorService.deleteFornecedorService(id);
+    return res.status(200).send("Deletado com sucesso");
+  } catch (e) {
+    return res.status(400).send(e.message);
+  }
+}
+
 export default {
   createFornecedorController,
   findAllFornecedoresController,
   getProdutosByFornecedorController,
   updateFornecedorController,
   getFornecedorByIdController,
+  findFornecedorByNameController,
+  deleteFornecedorController,
 };

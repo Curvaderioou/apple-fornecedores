@@ -21,6 +21,14 @@ fornecedorRouter.get(
   fornecedorController.getProdutosByFornecedorController
 );
 
-// fornecedorRouter.get("/nome");
+fornecedorRouter.get(
+  "/nome/:nome",
+  fornecedorController.findFornecedorByNameController
+);
+
+fornecedorRouter.delete(
+  "/delete/:id",
+  fornecedorController.deleteFornecedorController
+);
 
 export default fornecedorRouter;

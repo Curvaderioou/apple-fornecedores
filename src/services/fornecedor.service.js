@@ -1,4 +1,5 @@
 import fornecedorRepositories from "../repositories/fornecedor.repositories.js";
+import produtoRepositories from "../repositories/produto.repositories.js";
 
 async function createFornecedorService({ nome }) {
   if (!nome) {
@@ -19,7 +20,7 @@ async function createFornecedorService({ nome }) {
 async function findAllFornecedoresService() {
   const fornecedores =
     await fornecedorRepositories.findAllFornecedoresRepository();
-  if (fornecedores.lenght === 0) throw new Error("Não há fornecedores");
+  if (fornecedores.length === 0) throw new Error("Não há fornecedores");
   return fornecedores;
 }
 
@@ -34,7 +35,7 @@ async function updateFornecedorService(id, { nome }) {
 }
 
 async function getFornecedorByIdService(id) {
-  const fornecedor = await fornecedorRepositories.findFornecedorById(id);
+  const fornecedor = fornecedorRepositories.findFornecedorById(id);
   if (!fornecedor) throw new Error("O fornecedor não foi encontrado");
   return fornecedor;
 }
@@ -47,10 +48,39 @@ async function getProdutosByFornecedorService(id) {
   return produtos;
 }
 
+async function findFornecedorByNameService(nome) {
+  const fornecedores =
+    await fornecedorRepositories.findFornecedorByNameRepository(nome);
+  if (fornecedores.length === 0) throw new Error("Não há fornecedores");
+  return {
+    fornecedores: fornecedores.map((fornecedor) => ({
+      id: fornecedor._id,
+      nome: fornecedor.nome,
+      produtos: fornecedor.produtos,
+    })),
+  };
+}
+
+async function deleteFornecedorService(id) {
+  const fornecedor = await fornecedorRepositories.findFornecedorById(id);
+  if (!fornecedor) throw new Error("não encontrado");
+  const response =
+    await fornecedorRepositories.getProdutosByFornecedorRepository(id);
+  const produtos = response.produtos;
+  for (const produto of produtos) {
+    await produtoRepositories.deleteProdutoRepository(produto._id.toString());
+  }
+
+  await fornecedorRepositories.deleteFornecedorRepository(id);
+  return "deletado";
+}
+
 export default {
   createFornecedorService,
   findAllFornecedoresService,
   getProdutosByFornecedorService,
   updateFornecedorService,
   getFornecedorByIdService,
+  findFornecedorByNameService,
+  deleteFornecedorService,
 };
