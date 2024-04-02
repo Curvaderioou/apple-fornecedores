@@ -1,4 +1,4 @@
-import Produto from "../models/produto.js";
+import Produto from "../models/Produto.js";
 
 const findAllProdutosRepository = () => Produto.find().sort({ _id: -1 });
 
