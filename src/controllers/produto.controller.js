@@ -61,10 +61,31 @@ async function updateProdutoController(req, res) {
   }
 }
 
+async function findModeloController(req, res) {
+  const { modelo } = req.query;
+  try {
+    const modelos = await produtoService.findModeloService(modelo);
+    return res.send(modelos);
+  } catch (e) {
+    return res.status(400).send(e.message);
+  }
+}
+
+async function findProdutoByPrecoController(req, res) {
+  try {
+    const produtos = await produtoService.findProtoByPrecoService();
+    return res.send(produtos);
+  } catch (error) {
+    return res.status(400).send(error.message);
+  }
+}
+
 export default {
   createProdutoController,
   findAllProdutosController,
   deleteProdutoController,
   findProdutoByIdController,
   updateProdutoController,
+  findModeloController,
+  findProdutoByPrecoController,
 };

@@ -56,7 +56,7 @@ async function getProdutosByFornecedorController(req, res) {
 }
 
 async function findFornecedorByNameController(req, res) {
-  const nome = req.params.nome;
+  const { nome } = req.query;
   try {
     const fornecedores = await fornecedorService.findFornecedorByNameService(
       nome

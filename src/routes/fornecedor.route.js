@@ -2,7 +2,6 @@ import { Router } from "express";
 import fornecedorController from "../controllers/fornecedor.controller.js";
 
 const fornecedorRouter = Router();
-fornecedorRouter.get("/", fornecedorController.findAllFornecedoresController);
 
 fornecedorRouter.post(
   "/create",
@@ -14,21 +13,22 @@ fornecedorRouter.patch(
   fornecedorController.updateFornecedorController
 );
 
-fornecedorRouter.get("/:id", fornecedorController.getFornecedorByIdController);
-
 fornecedorRouter.get(
   `/produtos/:id`,
   fornecedorController.getProdutosByFornecedorController
-);
-
-fornecedorRouter.get(
-  "/nome/:nome",
-  fornecedorController.findFornecedorByNameController
 );
 
 fornecedorRouter.delete(
   "/delete/:id",
   fornecedorController.deleteFornecedorController
 );
+
+fornecedorRouter.get(
+  "/nome",
+  fornecedorController.findFornecedorByNameController
+);
+
+fornecedorRouter.get("/:id", fornecedorController.getFornecedorByIdController);
+fornecedorRouter.get("/", fornecedorController.findAllFornecedoresController);
 
 export default fornecedorRouter;

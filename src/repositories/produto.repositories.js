@@ -1,6 +1,6 @@
 import Produto from "../models/produto.js";
 
-const findAllProdutosRepository = () => Produto.find();
+const findAllProdutosRepository = () => Produto.find().sort({ _id: -1 });
 
 const findProdutoByIdRepository = (id) => Produto.findById(id);
 
@@ -24,10 +24,22 @@ const updateProdutoRepository = (
   }
 };
 
+function findModeloRepository(modelo) {
+  return Produto.find({
+    modelo: { $regex: `${modelo || ""}`, $options: "i" },
+  }).sort({ preco: 1 });
+}
+
+function findProdutosByPrecoRepository() {
+  return Produto.find().sort({ preco: 1 });
+}
+
 export default {
   findAllProdutosRepository,
   createProdutoRepository,
   deleteProdutoRepository,
   findProdutoByIdRepository,
   updateProdutoRepository,
+  findModeloRepository,
+  findProdutosByPrecoRepository,
 };

@@ -59,10 +59,50 @@ async function updateProdutoService(
   return produtoAtt;
 }
 
+async function findModeloService(modelo) {
+  try {
+    const modelos = await produtoRepositories.findModeloRepository(modelo);
+    if (modelos.length === 0) throw new Error("Não há produtos nesse modelo");
+    return {
+      modelos: modelos.map((modelo) => ({
+        id: modelo._id,
+        tipo: modelo.tipo,
+        modelo: modelo.modelo,
+        cor: modelo.cor,
+        preco: modelo.preco,
+        fornecedor: modelo.fornecedor,
+      })),
+    };
+  } catch (e) {
+    return e.message;
+  }
+}
+
+async function findProtoByPrecoService() {
+  try {
+    const produtos = await produtoRepositories.findProdutosByPrecoRepository();
+    if (produtos.length === 0) throw new Error("Nenhum produto encontrado");
+    return {
+      produtos: produtos.map((produto) => ({
+        id: produto._id,
+        tipo: produto.tipo,
+        modelo: produto.modelo,
+        cor: produto.cor,
+        preco: produto.preco,
+        fornecedor: produto.fornecedor,
+      })),
+    };
+  } catch (e) {
+    return e.message;
+  }
+}
+
 export default {
   createProdutoService,
   findAllProdutosService,
   deleteProdutoService,
   findProdutoByIdService,
   updateProdutoService,
+  findModeloService,
+  findProtoByPrecoService,
 };
