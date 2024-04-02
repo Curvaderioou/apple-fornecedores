@@ -62,7 +62,7 @@ async function updateProdutoController(req, res) {
 }
 
 async function findModeloController(req, res) {
-  const { modelo } = req.query;
+  const { modelo } = req.body;
   try {
     const modelos = await produtoService.findModeloService(modelo);
     return res.send(modelos);
