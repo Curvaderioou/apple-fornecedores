@@ -1,7 +1,10 @@
 import { Router } from "express";
 import fornecedorController from "../controllers/fornecedor.controller.js";
+import authMiddleware from "../middlewares/auth.middleware.js";
 
 const fornecedorRouter = Router();
+
+fornecedorRouter.use(authMiddleware);
 
 fornecedorRouter.post(
   "/create",
