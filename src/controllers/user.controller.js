@@ -1,12 +1,13 @@
 import userService from "../services/user.service.js";
 
 async function createUserController(req, res) {
-  const { email, password } = req.body;
+  const { email, password, tipo } = req.body;
 
   try {
     const token = await userService.createUserService({
       email,
       password,
+      tipo,
     });
     res.status(201).send({ token: token });
   } catch (e) {

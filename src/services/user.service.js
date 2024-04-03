@@ -2,8 +2,8 @@ import authService from "../services/auth.service.js";
 import bcrypt from "bcrypt";
 import userRepositories from "../repositories/user.repositories.js";
 
-async function createUserService({ email, password }) {
-  if (!email || !password)
+async function createUserService({ email, password, tipo }) {
+  if (!email || !password || !tipo)
     throw new Error("Submit all fields for registration");
 
   const foundUser = await userRepositories.findByNomeUserRepository(email);
@@ -14,6 +14,7 @@ async function createUserService({ email, password }) {
   const user = await userRepositories.createUserRepository({
     email,
     password,
+    tipo,
   });
 
   if (!user) throw new Error("Error creating User");
