@@ -2,17 +2,18 @@ import authService from "../services/auth.service.js";
 import bcrypt from "bcrypt";
 import userRepositories from "../repositories/user.repositories.js";
 
-async function createUserService({ nome, senha }) {
-  if (!nome || !senha) throw new Error("Submit all fields for registration");
+async function createUserService({ email, password }) {
+  if (!email || !password)
+    throw new Error("Submit all fields for registration");
 
-  const foundUser = await userRepositories.findByNomeUserRepository(nome);
-  if (senha) senha = await bcrypt.hash(senha, 10);
+  const foundUser = await userRepositories.findByNomeUserRepository(email);
+  if (password) password = await bcrypt.hash(password, 10);
 
   if (foundUser) throw new Error("User already exists");
 
   const user = await userRepositories.createUserRepository({
-    nome,
-    senha,
+    email,
+    password,
   });
 
   if (!user) throw new Error("Error creating User");
@@ -48,17 +49,17 @@ async function findUserByIdService(userIdParam, userIdLogged) {
   return user;
 }
 
-async function updateUserService({ nome, senha }, userId, userIdLogged) {
-  if (!nome && !senha)
+async function updateUserService({ email, password }, userId, userIdLogged) {
+  if (!email && !password)
     throw new Error("Submit at least one field to update the user");
 
   const user = await userRepositories.findByIdUserRepository(userId);
 
   if (user._id != userIdLogged) throw new Error("You cannot update this user");
 
-  if (senha) senha = await bcrypt.hash(senha, 10);
+  if (password) password = await bcrypt.hash(password, 10);
 
-  await userRepositories.updateUserRepository(userId, nome, senha);
+  await userRepositories.updateUserRepository(userId, email, password);
 
   const userUpdated = await userRepositories.findByIdUserRepository(userId);
 

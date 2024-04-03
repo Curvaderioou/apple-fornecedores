@@ -1,5 +1,6 @@
 import User from "../models/User.js";
 
-const loginRepository = (nome) => User.findOne({ nome: nome }).select("+senha");
+const loginRepository = (email) =>
+  User.findOne({ email: email }).select("+senha");
 
 export default { loginRepository };

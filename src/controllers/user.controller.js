@@ -1,12 +1,12 @@
 import userService from "../services/user.service.js";
 
 async function createUserController(req, res) {
-  const { nome, senha } = req.body;
+  const { email, password } = req.body;
 
   try {
     const token = await userService.createUserService({
-      nome,
-      senha,
+      email,
+      password,
     });
     res.status(201).send({ token: token });
   } catch (e) {
@@ -37,12 +37,12 @@ async function findUserByIdController(req, res) {
 
 async function updateUserController(req, res) {
   try {
-    const { nome, senha } = req.body;
+    const { email, password } = req.body;
     const { id: userId } = req.params;
     const userIdLogged = req.userId;
 
     const response = await userService.updateUserService(
-      { nome, senha },
+      { email, password },
       userId,
       userIdLogged
     );

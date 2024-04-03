@@ -1,22 +1,22 @@
 import User from "../models/User.js";
 
-const findByNomeUserRepository = (nome) => User.findOne({ nome: nome });
+const findByNomeUserRepository = (email) => User.findOne({ email: email });
 
-const createUserRepository = ({ nome, senha }) =>
+const createUserRepository = ({ email, password }) =>
   User.create({
-    nome,
-    senha,
+    email,
+    password,
   });
 
 const findAllUserRepository = () => User.find();
 
 const findByIdUserRepository = (idUser) => User.findById(idUser);
 
-const updateUserRepository = async (id, nome, senha) => {
+const updateUserRepository = async (id, email, password) => {
   try {
     const updatedUser = await User.findOneAndUpdate(
       { _id: id },
-      { nome, senha },
+      { email, password },
       { new: true } // Para retornar o documento atualizado
     );
 
